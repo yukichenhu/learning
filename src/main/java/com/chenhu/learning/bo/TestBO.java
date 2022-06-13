@@ -9,4 +9,5 @@ import lombok.Data;
 @Data
 public class TestBO {
     private String comment;
+    private String remark;
 }

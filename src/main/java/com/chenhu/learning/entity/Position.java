@@ -1,6 +1,11 @@
 package com.chenhu.learning.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -10,7 +15,11 @@ import javax.persistence.*;
  */
 @Data
 @Entity
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "t_position")
+@EntityListeners(AuditingEntityListener.class)
 public class Position {
     @Id
     @Column(name = "position_id")
@@ -20,4 +29,7 @@ public class Position {
     private Integer deptId;
 
     private String positionName;
+
+    @LastModifiedDate
+    private Long updateTime;
 }

@@ -1,8 +1,12 @@
 package com.chenhu.learning;
 
 import com.chenhu.learning.bo.UserBO;
+import com.chenhu.learning.entity.Position;
+import com.chenhu.learning.entity.TreeNode;
 import com.chenhu.learning.entity.User;
 import com.chenhu.learning.query.QueryWrapper;
+import com.chenhu.learning.repository.PositionRepository;
+import com.chenhu.learning.repository.TreeNodeRepository;
 import com.chenhu.learning.repository.UserRepository;
 import com.chenhu.learning.utils.JsonUtils;
 import com.chenhu.learning.utils.QueryUtils;
@@ -22,6 +26,10 @@ class LearningApplicationTests {
 
     @Resource
     private UserRepository userRepository;
+    @Resource
+    private PositionRepository positionRepository;
+    @Resource
+    private TreeNodeRepository treeNodeRepository;
     @Resource
     private QueryUtils queryUtils;
     @Test
@@ -47,8 +55,8 @@ class LearningApplicationTests {
 
     @Test
     void save(){
-        User user=User.builder().name("lisi").email("lisi@163.com").contactPhone("17558435869").build();
-        userRepository.save(user);
+        Example example=Example.of(Position.builder().positionName("java开发").build());
+        System.out.println(positionRepository.findAll(example));
     }
 
     @Test
@@ -108,5 +116,31 @@ class LearningApplicationTests {
         Page<UserBO> users=queryUtils.queryPage(mainSql, queryWrapper,UserBO.class,page);
         System.out.println(users.getTotalElements());
         System.out.println(users.getContent());
+    }
+
+    @Test
+    void findUserAll(){
+        System.out.println(userRepository.findALL(PageRequest.of(0,10)));
+    }
+
+    @Test
+    void testIterable(){
+//        TreeNode node1=TreeNode.builder().name("node1").build();
+//        treeNodeRepository.save(node1);
+//        TreeNode node11=TreeNode.builder().name("node11").parent(node1).build();
+//        treeNodeRepository.save(node11);
+
+        TreeNode node2=TreeNode.builder().name("node2").build();
+        TreeNode node21=TreeNode.builder().name("node21").parent(node2).build();
+        node2.setChildren(Collections.singleton(node21));
+        TreeNode node211=TreeNode.builder().name("node211").parent(node21).build();
+        node21.setChildren(Collections.singleton(node211));
+        treeNodeRepository.save(node2);
+    }
+
+    @Test
+    public void testReadTree(){
+        TreeNode node=treeNodeRepository.findById(1).orElse(null);
+        System.out.println(node);
     }
 }
