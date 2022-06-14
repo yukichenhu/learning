@@ -8,3 +8,4 @@ spring:
     generate-ddl: true
     database: mysql
     show-sql: true
+worker-id: 2

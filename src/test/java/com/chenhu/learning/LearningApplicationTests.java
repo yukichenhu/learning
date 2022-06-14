@@ -55,7 +55,7 @@ class LearningApplicationTests {
 
     @Test
     void save(){
-        Example example=Example.of(Position.builder().positionName("java开发").build());
+        Example<Position> example=Example.of(Position.builder().positionName("java开发").build());
         System.out.println(positionRepository.findAll(example));
     }
 
