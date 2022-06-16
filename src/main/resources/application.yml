@@ -3,9 +3,22 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: mysql@2022
-    url: jdbc:mysql://localhost:3306/test
+    url: jdbc:mysql://localhost:3306/test?rewriteBatchedStatements=true
   jpa:
     generate-ddl: true
     database: mysql
-    show-sql: true
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+          batch_versioned_data: true
+        format_sql: true
+        order_inserts: true
 worker-id: 2
+leader-election:
+  cron: "*/10 * * * * ?"
+  timeout-sec: 20
+
+server:
+  port: 8081

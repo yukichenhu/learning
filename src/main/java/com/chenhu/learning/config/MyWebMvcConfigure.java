@@ -15,6 +15,7 @@ import java.util.List;
 public class MyWebMvcConfigure implements WebMvcConfigurer {
     @Resource
     private MyPageHandlerMethodArgResolver myPageHandlerMethodArgResolver;
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(myPageHandlerMethodArgResolver);

@@ -6,7 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Data
 @Entity
@@ -16,7 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class User {
     @Id
-    @GenericGenerator(name = "snowId",strategy = "com.chenhu.learning.config.SnowIdGenerator")
+    @GenericGenerator(name = "snowId", strategy = "com.chenhu.learning.config.SnowIdGenerator")
     @GeneratedValue(generator = "snowId")
     private Long id;
     private String name;

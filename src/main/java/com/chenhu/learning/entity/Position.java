@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,8 +24,9 @@ import javax.persistence.*;
 public class Position {
     @Id
     @Column(name = "position_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer positionId;
+    @GenericGenerator(name = "snowId", strategy = "com.chenhu.learning.config.SnowIdGenerator")
+    @GeneratedValue(generator = "snowId")
+    private Long positionId;
 
     private Integer deptId;
 

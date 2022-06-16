@@ -33,16 +33,16 @@ public class UserController {
     private PostRepository postRepository;
 
     @PostMapping("addUser")
-    public void addUser(@RequestBody User user){
+    public void addUser(@RequestBody User user) {
         userRepository.save(user);
     }
 
     @PostMapping("addPost")
-    public Post addUser(@RequestBody Post post){
-        if(!ObjectUtils.isEmpty(post.getPostId())){
-            Post origin=postRepository.findById(post.getPostId()).orElse(null);
-            if(!ObjectUtils.isEmpty(origin)){
-                PropertyUtils.copyNotNullProperty(post,origin);
+    public Post addUser(@RequestBody Post post) {
+        if (!ObjectUtils.isEmpty(post.getPostId())) {
+            Post origin = postRepository.findById(post.getPostId()).orElse(null);
+            if (!ObjectUtils.isEmpty(origin)) {
+                PropertyUtils.copyNotNullProperty(post, origin);
                 return postRepository.save(origin);
             }
         }
@@ -50,12 +50,12 @@ public class UserController {
     }
 
     @PostMapping("findPage")
-    public Page<UserBO> findPage(MyPageRequest pageRequest){
-        String mainSql="select u.name,u.email,p.position_name from t_user u join t_position p on u.position_id=p.position_id";
-        QueryWrapper queryWrapper=new QueryWrapper()
-                .eq("u.name","zhangsan")
-                .like("u.email","qq.com")
+    public Page<UserBO> findPage(MyPageRequest pageRequest) {
+        String mainSql = "select u.name,u.email,p.position_name from t_user u join t_position p on u.position_id=p.position_id";
+        QueryWrapper queryWrapper = new QueryWrapper()
+                .eq("u.name", "zhangsan")
+                .like("u.email", "qq.com")
                 .orderByDesc("u.id");
-        return queryUtils.queryPage(mainSql, queryWrapper,UserBO.class,pageRequest);
+        return queryUtils.queryPage(mainSql, queryWrapper, UserBO.class, pageRequest);
     }
 }

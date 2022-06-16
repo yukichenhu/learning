@@ -28,36 +28,36 @@ public class QueryFilter {
             return false;
         }
         QueryFilter that = (QueryFilter) o;
-        return this.filterName.equals(that.getFilterName())&&this.filterValue.equals(that.filterValue)&&this.operator.equals(that.getOperator());
+        return this.filterName.equals(that.getFilterName()) && this.filterValue.equals(that.filterValue) && this.operator.equals(that.getOperator());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(filterName, filterValue,operator);
+        return Objects.hash(filterName, filterValue, operator);
     }
 
-    public String buildSql(Set<Object> params){
-        StringBuilder sb=new StringBuilder();
-        switch (operator){
+    public String buildSql(Set<Object> params) {
+        StringBuilder sb = new StringBuilder();
+        switch (operator) {
             case "=":
                 sb.append(filterName).append("= ? ");
                 params.add(filterValue);
                 break;
             case "like":
                 sb.append(filterName).append(" like ? ");
-                params.add("%"+filterValue+"%");
+                params.add("%" + filterValue + "%");
                 break;
             case "not like":
                 sb.append(filterName).append(" not like ? ");
-                params.add("%"+filterValue+"%");
+                params.add("%" + filterValue + "%");
                 break;
             case "like left":
                 sb.append(filterName).append(" like ? ");
-                params.add(filterValue+"%");
+                params.add(filterValue + "%");
                 break;
             case "like right":
                 sb.append(filterName).append(" like ? ");
-                params.add("%"+filterValue);
+                params.add("%" + filterValue);
                 break;
             case "!=":
                 sb.append(filterName).append(" != ? ");
@@ -97,21 +97,21 @@ public class QueryFilter {
                 break;
             case "in":
                 sb.append(filterName).append(" in (");
-                Collection inList=(Collection) filterValue;
+                Collection inList = (Collection) filterValue;
                 for (Object o : inList) {
                     sb.append("?,");
                     params.add(o);
                 }
-                sb.deleteCharAt(sb.length()-1).append(") ");
+                sb.deleteCharAt(sb.length() - 1).append(") ");
                 break;
             case "not in":
                 sb.append(filterName).append(" not in (");
-                Collection notList=(Collection) filterValue;
+                Collection notList = (Collection) filterValue;
                 for (Object o : notList) {
                     sb.append("?,");
                     params.add(o);
                 }
-                sb.deleteCharAt(sb.length()-1).append(") ");
+                sb.deleteCharAt(sb.length() - 1).append(") ");
             default:
         }
         return sb.toString();

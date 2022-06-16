@@ -14,19 +14,19 @@ import java.util.Set;
  */
 public class PropertyUtils {
 
-    public static void copyNotNullProperty(Object source,Object target){
-        BeanUtils.copyProperties(source,target,getNullPropertyNames(source));
+    public static void copyNotNullProperty(Object source, Object target) {
+        BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
     }
 
-    private static String[] getNullPropertyNames(Object source){
-        BeanWrapper wrapper=new BeanWrapperImpl(source);
-        Set<String> names=new HashSet<>();
+    private static String[] getNullPropertyNames(Object source) {
+        BeanWrapper wrapper = new BeanWrapperImpl(source);
+        Set<String> names = new HashSet<>();
         for (PropertyDescriptor pd : wrapper.getPropertyDescriptors()) {
-            if(wrapper.getPropertyValue(pd.getName())==null){
+            if (wrapper.getPropertyValue(pd.getName()) == null) {
                 names.add(pd.getName());
             }
         }
-        String[] results=new String[names.size()];
+        String[] results = new String[names.size()];
         return names.toArray(results);
     }
 }

@@ -15,14 +15,14 @@ import java.text.SimpleDateFormat;
 public class WebConfig {
 
     @Bean
-    ObjectMapper objectMapper(){
-        ObjectMapper objectMapper=new ObjectMapper();
+    ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         return objectMapper;
     }
 
     @Bean
-    Gson gson(){
+    Gson gson() {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
     }
 }

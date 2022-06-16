@@ -46,7 +46,7 @@ public class Post {
     private Timestamp updateTime;
 
     @PostUpdate
-    public void postUpdate(){
-        System.out.println("---更新了记录---:"+this.postId);
+    public void postUpdate() {
+        System.out.println("---更新了记录---:" + this.postId);
     }
 }

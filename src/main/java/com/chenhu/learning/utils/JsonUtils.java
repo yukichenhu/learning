@@ -21,11 +21,11 @@ public class JsonUtils {
         JsonUtils.gson = gson;
     }
 
-    public static <T> List<T> parseToList(List<Map> list, Class<T> clazz){
-        return list.stream().map(e-> gson.fromJson(gson.toJson(e),clazz)).collect(Collectors.toList());
+    public static <T> List<T> parseToList(List<Map> list, Class<T> clazz) {
+        return list.stream().map(e -> gson.fromJson(gson.toJson(e), clazz)).collect(Collectors.toList());
     }
 
-    public static <T> List<T> parseArrayToList(Object object,Class<T> clazz){
-        return JSON.parseArray(JSON.toJSONString(object),clazz);
+    public static <T> List<T> parseArrayToList(Object object, Class<T> clazz) {
+        return JSON.parseArray(JSON.toJSONString(object), clazz);
     }
 }

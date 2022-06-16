@@ -23,14 +23,14 @@ public class MyPageHandlerMethodArgResolver extends PageableHandlerMethodArgumen
     private static final SortHandlerMethodArgumentResolver DEFAULT_SORT_RESOLVER = new SortHandlerMethodArgumentResolver();
     private SortArgumentResolver sortResolver;
 
-    private static final Integer DEFAULT_PAGE=0;
-    private static final Integer DEFAULT_SIZE=10;
+    private static final Integer DEFAULT_PAGE = 0;
+    private static final Integer DEFAULT_SIZE = 10;
 
-    private static final String JPA_PAGE_PARAM="page";
-    private static final String JPA_SIZE_PARAM="size";
+    private static final String JPA_PAGE_PARAM = "page";
+    private static final String JPA_SIZE_PARAM = "size";
 
-    private static final String DEFAULT_PAGE_PARAM="page[number]";
-    private static final String DEFAULT_SIZE_PARAM="size[size]";
+    private static final String DEFAULT_PAGE_PARAM = "page[number]";
+    private static final String DEFAULT_SIZE_PARAM = "size[size]";
 
     public MyPageHandlerMethodArgResolver(@Nullable SortArgumentResolver sortResolver) {
         this.sortResolver = sortResolver == null ? DEFAULT_SORT_RESOLVER : sortResolver;
@@ -44,16 +44,16 @@ public class MyPageHandlerMethodArgResolver extends PageableHandlerMethodArgumen
     @NotNull
     @Override
     public MyPageRequest resolveArgument(@NotNull MethodParameter methodParameter, @Nullable ModelAndViewContainer mavContainer, NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) {
-        String jpaPageStr=webRequest.getParameter(JPA_PAGE_PARAM);
-        String jpaSizeStr=webRequest.getParameter(JPA_SIZE_PARAM);
+        String jpaPageStr = webRequest.getParameter(JPA_PAGE_PARAM);
+        String jpaSizeStr = webRequest.getParameter(JPA_SIZE_PARAM);
 
-        String pageStr=webRequest.getParameter(DEFAULT_PAGE_PARAM);
-        String sizeStr=webRequest.getParameter(DEFAULT_SIZE_PARAM);
+        String pageStr = webRequest.getParameter(DEFAULT_PAGE_PARAM);
+        String sizeStr = webRequest.getParameter(DEFAULT_SIZE_PARAM);
 
-        Integer page=jpaPageStr!=null?Integer.valueOf(jpaPageStr):pageStr!=null?Integer.valueOf(pageStr):DEFAULT_PAGE;
-        Integer size=jpaSizeStr!=null?Integer.valueOf(jpaSizeStr):sizeStr!=null?Integer.valueOf(sizeStr):DEFAULT_SIZE;
+        Integer page = jpaPageStr != null ? Integer.valueOf(jpaPageStr) : pageStr != null ? Integer.valueOf(pageStr) : DEFAULT_PAGE;
+        Integer size = jpaSizeStr != null ? Integer.valueOf(jpaSizeStr) : sizeStr != null ? Integer.valueOf(sizeStr) : DEFAULT_SIZE;
 
-        Sort sort=sortResolver.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
-        return new MyPageRequest(page,size,sort);
+        Sort sort = sortResolver.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
+        return new MyPageRequest(page, size, sort);
     }
 }

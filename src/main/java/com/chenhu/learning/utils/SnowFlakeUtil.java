@@ -4,11 +4,11 @@ import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Stream;
 
 /**
@@ -26,13 +26,14 @@ public class SnowFlakeUtil {
         SnowFlakeUtil.workerId = workerId;
     }
 
-    private static final long dataCenterId=1;
-    private static Snowflake snowflake = IdUtil.getSnowflake(workerId,dataCenterId);
+    private static final long DATA_CENTER_ID = 1;
+    private static Snowflake snowflake = IdUtil.getSnowflake(workerId, DATA_CENTER_ID);
 
     @PostConstruct
-    public void init(){
-        snowflake = IdUtil.getSnowflake(workerId,dataCenterId);
+    public void init() {
+        snowflake = IdUtil.getSnowflake(workerId, DATA_CENTER_ID);
     }
+
     public static synchronized long snowflakeId() {
         return snowflake.nextId();
     }
@@ -43,12 +44,18 @@ public class SnowFlakeUtil {
     }
 
     public static void main(String[] args) {
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
-        Stream.iterate(0, x->x+1).
+        ThreadPoolTaskExecutor executorService=new ThreadPoolTaskExecutor();
+        executorService.setCorePoolSize(5);
+        executorService.setMaxPoolSize(5);
+        executorService.setThreadNamePrefix("my-task-");
+        executorService.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executorService.setWaitForTasksToCompleteOnShutdown(true);
+        executorService.initialize();
+        Stream.iterate(0, x -> x + 1).
                 limit(20).
-                forEach(x->{
-                    executorService.submit(()->{
-                        long id = SnowFlakeUtil.snowflakeId(1,1);
+                forEach(x -> {
+                    executorService.submit(() -> {
+                        long id = SnowFlakeUtil.snowflakeId(1, 1);
                         System.out.println(id);
                     });
                 });
