@@ -10,6 +10,7 @@ import com.chenhu.learning.repository.TreeNodeRepository;
 import com.chenhu.learning.repository.UserRepository;
 import com.chenhu.learning.utils.JsonUtils;
 import com.chenhu.learning.utils.QueryUtils;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -17,10 +18,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
-
+import org.springframework.util.ResourceUtils;
 import javax.annotation.Resource;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -170,6 +173,25 @@ class LearningApplicationTests {
             System.out.println("http://" + hostIp + ":" + port + contextPath);
         } catch (UnknownHostException e) {
             System.out.println("unknown host:" + port + contextPath);
+        }
+    }
+
+    @Test
+    @SneakyThrows
+    public void getLeaderId() {
+        String filePath= ResourceUtils.getURL("classpath:").getPath()+ "leaderId.txt";
+        FileReader reader=new FileReader(filePath);
+        int data;
+        StringBuilder sb=new StringBuilder();
+        while((data=reader.read())!=-1){
+            sb.append((char)data);
+        }
+        reader.close();
+        if(ObjectUtils.isEmpty(sb.toString())){
+            FileWriter writer=new FileWriter(filePath);
+            writer.write(UUID.randomUUID().toString());
+            writer.flush();
+            writer.close();
         }
     }
 }

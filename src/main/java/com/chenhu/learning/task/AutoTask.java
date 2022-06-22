@@ -1,7 +1,6 @@
 package com.chenhu.learning.task;
 
 import com.chenhu.learning.controller.LeaderElectionService;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -18,11 +17,11 @@ public class AutoTask {
     @Resource
     private LeaderElectionService leaderElectionService;
 
-    @Scheduled(cron = "${leader-election.cron}")
+    @Scheduled(cron = "${leader-election.cron:0/10 * * * * ?}")
     public void electLeader() {
         try {
             leaderElectionService.electLeader();
-        } catch (ObjectOptimisticLockingFailureException e) {
+        } catch (Exception e) {
             System.out.println("竞选leader失败");
         }
     }

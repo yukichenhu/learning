@@ -1,11 +1,11 @@
 package com.chenhu.learning;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.chenhu.learning.utils.IpUtils;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,11 +33,8 @@ public class HutoolTest {
     @SneakyThrows
     @Test
     public void test() {
-//        InetAddress addr=InetAddress.getLocalHost();
-//        String ip= addr.getHostAddress();
-//        String hostName= addr.getHostName();
-//        System.out.printf("%s : %s",ip,hostName);
-        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
-        System.out.println(runtimeMXBean.getName());
+        System.out.println(InetAddress.getLocalHost().getHostAddress());
+        System.out.println(IpUtils.getLocalhostExactAddress("192.168.0").getHostAddress());
+        System.out.println(IpUtils.getLocalhostExactAddress("172.23").getHostAddress());
     }
 }

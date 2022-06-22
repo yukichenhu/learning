@@ -1,0 +1,4 @@
+FROM 192.168.0.178:8088/hongwang-centos
+WORKDIR /
+COPY target/*.jar ./app.jar
+CMD java -Xms32m -Xmx512m -jar --spring.profiles.active=default app.jar

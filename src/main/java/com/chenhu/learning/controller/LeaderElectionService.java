@@ -2,6 +2,7 @@ package com.chenhu.learning.controller;
 
 import com.chenhu.learning.entity.LeaderElection;
 import com.chenhu.learning.repository.LeaderElectionRepository;
+import com.chenhu.learning.utils.IpUtils;
 import com.chenhu.learning.utils.PropertyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,12 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.lang.management.ManagementFactory;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author 陈虎
@@ -31,25 +35,60 @@ public class LeaderElectionService {
     private ApplicationContext applicationContext;
     @Resource
     private LeaderElectionRepository electionRepository;
-    @Value("${leader-election.timeout-sec}")
-    private Integer timeoutSec = 20;
+    @Value("${leader-election.timeout-sec:20}")
+    private Integer timeoutSec;
     private final String serviceName = "hmesh-manager";
 
+    private static String leaderId;
+
+    @Value("#{'${leader-election.prefer-ips:}'.split(',')}")
+    private String[] preferIps;
+
     /**
-     * 生成leaderId  ${hostIp}_${pid}
-     *
-     * @return leaderId
+     * 生成leaderId  ${hostIp}_${uuid}
      */
-    private String getLeaderId() {
-        String hostIp;
-        String pId = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
-        try {
-            hostIp = InetAddress.getLocalHost().getHostAddress();
-            return hostIp + "_" + pId;
-        } catch (UnknownHostException e) {
-            log.info("unknown host");
-            return "unknown host" + "_" + pId;
+    @PostConstruct
+    public void setLeaderId(){
+        if(!ObjectUtils.isEmpty(leaderId)){
+            return;
         }
+        String filePath= "";
+        String hostIp;
+        //获取id文件路径，不存在则创建
+        try {
+            filePath = ".leaderId.txt";
+            File file=new File(filePath);
+            if(!file.exists()){
+                if(file.createNewFile()){
+                    log.info("leaderId.txt文件创建成功");
+                }
+            }
+        } catch (IOException e) {
+            log.info("获取文件异常");
+        }
+        //读取文件内容
+        StringBuilder sb = new StringBuilder();
+        try (FileReader reader = new FileReader(filePath)) {
+            int data;
+            sb = new StringBuilder();
+            while ((data = reader.read()) != -1) {
+                sb.append((char) data);
+            }
+        } catch (IOException e) {
+            log.info("读取leaderId文件异常");
+        }
+        //内容不存在新增
+        if(ObjectUtils.isEmpty(sb.toString())){
+            try (FileWriter writer = new FileWriter(filePath)) {
+                hostIp = IpUtils.getLocalhostExactAddress(preferIps).getHostAddress();
+                sb.append(hostIp).append("_").append(UUID.randomUUID());
+                writer.write(sb.toString());
+                writer.flush();
+            }catch (IOException e){
+                log.info("写leaderId文件异常");
+            }
+        }
+        leaderId=sb.toString();
     }
 
     /**
@@ -57,7 +96,7 @@ public class LeaderElectionService {
      *
      * @return 本机访问url
      */
-    private String getLeaderUrl() {
+    public String getLeaderUrl() {
         String hostIp;
         Environment env = applicationContext.getEnvironment();
         String port = env.getProperty("server.port");
@@ -68,12 +107,8 @@ public class LeaderElectionService {
         if (ObjectUtils.isEmpty(contextPath)) {
             contextPath = "/";
         }
-        try {
-            hostIp = InetAddress.getLocalHost().getHostAddress();
-            return "http://" + hostIp + ":" + port + contextPath;
-        } catch (UnknownHostException e) {
-            return "unknown host:" + port + contextPath;
-        }
+        hostIp = IpUtils.getLocalhostExactAddress(preferIps).getHostAddress();
+        return "http://" + hostIp + ":" + port + contextPath;
     }
 
     /**
@@ -84,14 +119,14 @@ public class LeaderElectionService {
         Optional<LeaderElection> leader = electionRepository.findById(serviceName);
         LeaderElection leaderElection = LeaderElection.builder()
                 .serviceId(serviceName)
-                .leaderId(getLeaderId())
+                .leaderId(leaderId)
                 .leaderUrl(getLeaderUrl())
                 .lastActiveTime(new Date())
                 .build();
         //不存在或者leader为自身，直接插入
         if (!leader.isPresent()) {
             electionRepository.save(leaderElection);
-            log.info("{} i am leader now", new Date());
+            log.info("i am leader now {}", new Date());
         } else if (leaderElection.getLeaderId().equals(leader.get().getLeaderId())) {
             leader.get().setLastActiveTime(new Date());
             electionRepository.save(leader.get());
@@ -131,7 +166,7 @@ public class LeaderElectionService {
      */
     @PostMapping("leaderIsMe")
     public boolean leaderIsMe() {
-        int count = electionRepository.countByServiceIdAndLeaderId(serviceName, getLeaderId());
+        int count = electionRepository.countByServiceIdAndLeaderId(serviceName, leaderId);
         return count > 0;
     }
 

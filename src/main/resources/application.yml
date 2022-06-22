@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: mysql@2022
-    url: jdbc:mysql://localhost:3306/test?rewriteBatchedStatements=true
+    url: jdbc:mysql://192.168.30.103:3306/test?rewriteBatchedStatements=true&serverTimezone=GMT%2B8
   jpa:
     generate-ddl: true
     database: mysql
@@ -17,8 +17,9 @@ spring:
         order_inserts: true
 worker-id: 2
 leader-election:
-  cron: "*/10 * * * * ?"
+  cron: "*/15 * * * * ?"
   timeout-sec: 20
+  prefer-ips: 192.168.0,172.23
 
 server:
   port: 8081
