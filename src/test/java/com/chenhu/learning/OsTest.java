@@ -1,6 +1,7 @@
 package com.chenhu.learning;
 
 import cn.hutool.core.util.RuntimeUtil;
+import com.chenhu.learning.config.GlobalConfig;
 import com.chenhu.learning.utils.OsUtils;
 import lombok.SneakyThrows;
 import org.apache.commons.exec.CommandLine;
@@ -22,5 +23,14 @@ public class OsTest {
     @SneakyThrows
     public void test2(){
         System.out.println(RuntimeUtil.execForStr("cmd /c dir"));
+    }
+
+    @Test
+    public void test3(){
+        GlobalConfig config1=GlobalConfig.createInstance();
+        GlobalConfig config2=GlobalConfig.createInstance();
+        System.out.println(config1.hashCode());
+        System.out.println(config2.hashCode());
+        System.out.println(config1.equals(config2));
     }
 }

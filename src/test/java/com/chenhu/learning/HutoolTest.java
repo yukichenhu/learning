@@ -1,11 +1,9 @@
 package com.chenhu.learning;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.chenhu.learning.utils.IpUtils;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +31,6 @@ public class HutoolTest {
     @SneakyThrows
     @Test
     public void test() {
-        System.out.println(InetAddress.getLocalHost().getHostAddress());
-        System.out.println(IpUtils.getLocalhostExactAddress("192.168.0").getHostAddress());
-        System.out.println(IpUtils.getLocalhostExactAddress("172.23").getHostAddress());
+
     }
 }

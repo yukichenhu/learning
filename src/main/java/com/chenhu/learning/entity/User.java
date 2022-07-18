@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author 陈虎
+ */
 @Data
 @Entity
 @Table(name = "t_user")
@@ -26,4 +29,5 @@ public class User {
     private String email;
     private String contactPhone;
     private Integer positionId;
+    private String pwd;
 }

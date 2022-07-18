@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     @Query(nativeQuery = true, value = "select u.* from t_user u join t_position p on u.position_id=p.position_id " +
             "where p.position_id=1")
     Page<User> findALL(Pageable pageable);
+
+    User findUserByName(String username);
 }

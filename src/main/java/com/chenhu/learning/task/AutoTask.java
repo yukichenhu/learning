@@ -2,7 +2,6 @@ package com.chenhu.learning.task;
 
 import com.chenhu.learning.controller.LeaderElectionService;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,7 +16,7 @@ public class AutoTask {
     @Resource
     private LeaderElectionService leaderElectionService;
 
-    @Scheduled(cron = "${leader-election.cron:0/10 * * * * ?}")
+    //@Scheduled(cron = "${leader-election.cron:0/10 * * * * ?}")
     public void electLeader() {
         try {
             leaderElectionService.electLeader();
