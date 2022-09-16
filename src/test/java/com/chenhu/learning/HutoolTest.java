@@ -1,11 +1,10 @@
 package com.chenhu.learning;
 
-import cn.hutool.core.util.ObjectUtil;
+import com.chenhu.learning.entity.Animal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author 陈虎
@@ -14,23 +13,20 @@ import java.util.Map;
 public class HutoolTest {
 
     @Test
-    public void testClone() {
-        Map<String, Object> outer = new HashMap<>(1);
-        Map<String, String> inner = new HashMap<>(1);
-        inner.put("name", "test");
-        outer.put("inner", inner);
-
-        Map<String, Object> clone = ObjectUtil.cloneByStream(outer);
-        Map<String, Object> clone2 = new HashMap<>(outer);
-        inner.put("sex", "男");
-        System.out.println(outer);
-        System.out.println(clone);
-        System.out.println(clone2);
+    public void testClone() throws JsonProcessingException {
+        Animal a=new Animal();
+        a.setName(null);
+        Animal.Detail detail=new Animal.Detail();
+        detail.setAge(2);
+        a.setDetail(detail);
+        System.out.println(new ObjectMapper().writeValueAsString(a));
+        //System.out.println(new GsonBuilder().create().toJson(a));
     }
 
     @SneakyThrows
     @Test
     public void test() {
-
+        int num = 7 * 60 / 100;
+        System.out.println(num);
     }
 }

@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.Map;
 
 /**
  * @author 陈虎
  */
-@RestController
+@RestController(value = "myUserController")
 @RequestMapping(value = "test")
 public class UserController {
     @Resource
@@ -76,9 +75,9 @@ public class UserController {
     }
 
     @RequestMapping("/a")
-    public Map<Object,Object> a(HttpServletResponse resp){
-        resp.setHeader("Cache-Control","public,max_age=30");
-        System.out.println("--进入方法--");
+    public Map<Object,Object> a(String name,String age){
+        System.out.printf("--进入方法--name:%s,age:%s%n", name,age);
+        System.out.println();
         Map info=MapUtil.of("address","地址1");
         return MapUtil.builder()
                 .put("name","test1")

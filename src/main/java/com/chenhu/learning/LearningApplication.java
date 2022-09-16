@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author 陈虎
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.chenhu.learning"})
 public class LearningApplication {
 
     public static void main(String[] args) {
