@@ -1,4 +1,4 @@
-package rpc;
+package com.chenhu.learning.rpc;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

@@ -1,4 +1,4 @@
-package rpc;
+package com.chenhu.learning.rpc;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
