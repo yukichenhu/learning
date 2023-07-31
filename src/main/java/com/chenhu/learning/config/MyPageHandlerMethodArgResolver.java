@@ -21,7 +21,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class MyPageHandlerMethodArgResolver extends PageableHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     private static final SortHandlerMethodArgumentResolver DEFAULT_SORT_RESOLVER = new SortHandlerMethodArgumentResolver();
-    private SortArgumentResolver sortResolver;
+    private final SortArgumentResolver sortResolver;
 
     private static final Integer DEFAULT_PAGE = 0;
     private static final Integer DEFAULT_SIZE = 10;

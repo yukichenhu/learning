@@ -12,6 +12,7 @@ import com.chenhu.learning.repository.UserRepository;
 import com.chenhu.learning.utils.PropertyUtils;
 import com.chenhu.learning.utils.QueryUtils;
 import com.chenhu.learning.utils.SshUtils;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.data.domain.Page;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -68,10 +69,15 @@ public class UserController {
         SshUtils.testCmd();
     }
 
-    @PostMapping("testLimit")
-    public String testLimit(String msg){
-        System.out.println("msg:"+msg);
-        return "success";
+    @GetMapping("testLimit")
+    public Object testLimit(HttpServletRequest req){
+        Enumeration headers=req.getHeaderNames();
+        while(headers.hasMoreElements()){
+            String headerName=headers.nextElement().toString();
+            String headerValue=req.getHeader(headerName);
+            System.out.printf("%s:%s%n", headerName,headerValue);
+        }
+        return ImmutableMap.of("result","success");
     }
 
     @RequestMapping("/a")

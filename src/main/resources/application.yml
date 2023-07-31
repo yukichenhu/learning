@@ -3,9 +3,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: mysql@2022
-    url: jdbc:mysql://192.168.30.103:3306/test?rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.0.136:3306/test?rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
   jpa:
-    generate-ddl: true
+    generate-ddl: false
     database: mysql
     show-sql: true
     properties:
@@ -17,7 +17,29 @@ spring:
         order_inserts: true
   servlet:
     multipart:
-      max-file-size: 10MB
+      max-file-size: 200MB
+      max-request-size: 200MB
+  kafka:
+    bootstrap-servers: 192.168.0.5:9092
+    producer: # 生产者
+      retries: 1 # 设置大于 0 的值，则客户端会将发送失败的记录重新发送
+      batch-size: 16384
+      buffer-memory: 33554432
+      acks: all
+      # 指定消息key和消息体的编解码方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: test
+      enable-auto-commit: true
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 500
+      security:
+        protocol: SASL_PLAINTEXT
+    jaas:
+      enabled: true
 
 worker-id: 2
 leader-election:
@@ -26,9 +48,9 @@ leader-election:
   prefer-ips: 192.168.0,172.23
 
 server:
-  port: 8081
+  port: 8082
   servlet:
-    context-path: /v1
+    context-path: /
 
 minio:
   # 访问的url

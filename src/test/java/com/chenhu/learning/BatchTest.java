@@ -85,4 +85,9 @@ public class BatchTest {
         });
         System.out.printf("共花费 %d毫秒%n", timer.interval());
     }
+
+    @Test
+    public void testHeartBeat(){
+        System.out.println(positionRepository.heartBeat(System.currentTimeMillis(),2L));
+    }
 }

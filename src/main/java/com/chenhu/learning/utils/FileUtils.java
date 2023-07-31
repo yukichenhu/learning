@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.nio.file.Paths;
 
 /**
  * @author 陈虎
@@ -53,9 +52,7 @@ public class FileUtils {
 
     @SneakyThrows
     public static void main(String[] args) {
-        String filePath="D:/documents/kong.yml";
-        String outPath="D:/documents/kong-copy.yml";
-        //write(outPath,readText(filePath));
-        System.out.println(OsUtils.cat(Paths.get(filePath)));
+        String filePath="kafka-conf/kafka-jaas.conf";
+        System.out.println(read(filePath));
     }
 }

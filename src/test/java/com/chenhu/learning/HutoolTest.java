@@ -3,9 +3,6 @@ package com.chenhu.learning;
 import com.chenhu.learning.database.DatabaseInfo;
 import com.chenhu.learning.database.DbClient;
 import com.chenhu.learning.database.QuerySql;
-import com.chenhu.learning.entity.Animal;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -20,15 +17,10 @@ import java.util.Map;
 public class HutoolTest {
 
     @Test
-    public void testClone() throws JsonProcessingException {
-        Animal a=new Animal();
-        a.setName(null);
-        Animal.Detail detail=new Animal.Detail();
-        detail.setAge(2);
-        a.setDetail(detail);
-        System.out.println(new ObjectMapper().writeValueAsString(a));
-        //System.out.println(new GsonBuilder().create().toJson(a));
+    public void testClone() {
+        System.out.println(System.getProperty("resource"));
     }
+
 
     @SneakyThrows
     @Test
@@ -36,9 +28,9 @@ public class HutoolTest {
         //数据库信息
         DatabaseInfo db=DatabaseInfo
                 .builder()
-                .driverFileUrl("http://192.168.0.136:9001/learning/mysql-connector-java-8.0.29.jar")
+                .driverFileUrl("http://192.168.0.136:9000/learning/mysql-connector-java-8.0.29.jar")
                 .driverClass("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://192.168.30.103:3306/test?rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai")
+                .url("jdbc:mysql://192.168.0.136:3306/test?rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai")
                 .username("root")
                 .password("mysql@2022")
                 .build();
@@ -62,7 +54,7 @@ public class HutoolTest {
         //数据库信息
         DatabaseInfo db=DatabaseInfo
                 .builder()
-                .driverFileUrl("http://192.168.0.136:9001/learning/postgresql-42.3.6.jar")
+                .driverFileUrl("http://192.168.0.136:9000/learning/postgresql-42.3.6.jar")
                 .driverClass("org.postgresql.Driver")
                 .url("jdbc:postgresql://192.168.0.186:5432/hmesh_dev")
                 .username("pgadmin")
