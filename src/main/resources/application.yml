@@ -1,9 +1,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: mysql@2022
-    url: jdbc:mysql://192.168.0.136:3306/test?rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: mysql@2022
+#    url: jdbc:mysql://192.168.0.136:3306/test?rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+    username: myadmin
+    password: Windows_8
+    url: jdbc:mysql://192.168.0.252:3306/cdp?rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
   jpa:
     generate-ddl: false
     database: mysql
@@ -48,7 +51,7 @@ leader-election:
   prefer-ips: 192.168.0,172.23
 
 server:
-  port: 8082
+  port: 8083
   servlet:
     context-path: /
 

@@ -21,4 +21,13 @@ public class NetUtilsTest {
         System.out.println(NetUtils.telnet("192.168.0.127",52116,2000));
         System.out.println(NetUtils.telnet("192.168.0.127",57608,2000));
     }
+
+    @Test
+    public void testFindIndex(){
+        String s="logout.$.user_id";
+        int i=s.indexOf(".");
+        System.out.println(i);
+        s=s.substring(i+1);
+        System.out.println(s);
+    }
 }

@@ -1,5 +1,6 @@
 package com.chenhu.learning.controller;
 
+import com.chenhu.learning.kafka.KafkaConsumer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,11 @@ public class KafkaController {
 
     @PostMapping("/send")
     public void sendMsg(String msg){
-        kafkaTemplate.send("test-topic","hello,kafka"+msg);
+        kafkaTemplate.send("test-topic",msg);
+    }
+
+    @PostMapping("/fetch")
+    public void fetchMsg(){
+        new KafkaConsumer().fetch();
     }
 }
